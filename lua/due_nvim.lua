@@ -80,7 +80,7 @@ function M.setup(c)
   ft = c.ft or '*.md'
   today = c.today or 'TODAY'
   today_hi = c.today_hi or 'Character'
-  this_week_hi = c.today_hi or 'SpecialChar'
+  this_week_hi = c.this_week_hi or 'SpecialChar'
   overdue = c.overdue or 'OVERDUE'
   overdue_hi = c.overdue_hi or 'Error'
   date_hi = c.date_hi or 'Conceal'
@@ -180,12 +180,8 @@ function M.draw(buf)
 
       if due > 0 then
         if due < 86400 then
-            if not use_clock_time then
-                parsed = { today, today_hi }
-            else
-                parsed = { parseDue(due), due_hi }
-            end
-        elseif due > 86400 and due < 64800 then
+            parsed = { today, today_hi }
+        elseif due > 86400 and due < 648000 then
             parsed = { parseDue(due), this_week_hi}
         else
             parsed = { parseDue(due), due_hi }
