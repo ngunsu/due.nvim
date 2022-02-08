@@ -7,6 +7,7 @@ local due_hi
 local ft
 local today
 local today_hi
+local this_week_hi
 local overdue
 local overdue_hi
 local date_hi
@@ -79,6 +80,7 @@ function M.setup(c)
   ft = c.ft or '*.md'
   today = c.today or 'TODAY'
   today_hi = c.today_hi or 'Character'
+  this_week_hi = c.today_hi or 'SpecialChar'
   overdue = c.overdue or 'OVERDUE'
   overdue_hi = c.overdue_hi or 'Error'
   date_hi = c.date_hi or 'Conceal'
@@ -177,10 +179,16 @@ function M.draw(buf)
       local parsed
 
       if due > 0 then
-        if not use_clock_time and due < 86400 then
-          parsed = { today, today_hi }
+        if due < 86400 then
+            if not use_clock_time then
+                parsed = { today, today_hi }
+            else
+                parsed = { parseDue(due), due_hi }
+            end
+        elseif due > 86400 and due < 64800 then
+            parsed = { parseDue(due), this_week_hi}
         else
-          parsed = { parseDue(due), due_hi }
+            parsed = { parseDue(due), due_hi }
         end
       else
         parsed = { overdue, overdue_hi }
